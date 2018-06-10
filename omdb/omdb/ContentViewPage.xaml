@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Details"
+             x:Name="ContentViewPage"
+             x:Class="omdb.ContentViewPage">
+    <ContentPage.Content>
+        <ScrollView Orientation="Vertical" Padding="0" VerticalOptions="FillAndExpand">
+        <StackLayout Spacing="5">
+            <StackLayout.Padding>
+                <OnPlatform Android="10" iOS="20,30,20,20" x:TypeArguments="Thickness"/>
+            </StackLayout.Padding>
+            <Image Source="{Binding Poster}" Aspect="AspectFit"
+           HorizontalOptions="Fill"/>
+        <Label Text="{Binding Title}" VerticalOptions="Center" HorizontalOptions="Center" />
+            <Label Text="{Binding Year,StringFormat='Year: {0}'}" />
+            <Label Text="{Binding Released,StringFormat='Released: {0}'}" />
+            <Label Text="{Binding Runtime, StringFormat='Runtime: {0}'}" />
+            <Label Text="{Binding Genre, StringFormat='Genre: {0}'}" />
+            <Label Text="{Binding Director, StringFormat='Director: {0}'}" />
+            <Label Text="{Binding Writer, StringFormat='Writer: {0}'}" />
+            <Label Text="{Binding Actors, StringFormat='Actors: {0}'}" />
+            <Label Text="{Binding Language, StringFormat='Language: {0}'}" />
+            <Label Text="{Binding Country, StringFormat='Country: {0}'}" />
+            <Label Text="{Binding Awards, StringFormat='Awards: {0}'}" />
+            <Label Text="{Binding imdbRating, StringFormat='imdbRating: {0}'}" />
+            <Label Text="{Binding imdbVotes, StringFormat='imdbVotes: {0}'}" />
+            <Label Text="{Binding Type, StringFormat='Type: {0}'}" />
+        </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>

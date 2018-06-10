@@ -2,13 +2,50 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:omdb"
+             Title="Search IMDB"
+             x:Name="MainPage"
              x:Class="omdb.MainPage">
-
-    <StackLayout>
-        <!-- Place new controls here -->
-    	<Label Text="Welcome to Xamarin.Forms!" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
+    <ContentPage.BindingContext>
+        <local:MainViewModel />
+    </ContentPage.BindingContext>
+    <StackLayout Spacing="15">
+        <StackLayout.Padding>
+            <OnPlatform Android="10" iOS="20,30,20,20" x:TypeArguments="Thickness"/>
+        </StackLayout.Padding>
+        <Label Text="Search Movies, Series, etc." FontSize="Large" FontAttributes="Bold,Italic" HorizontalOptions="FillAndExpand"
+           HorizontalTextAlignment="Center" TextColor="Purple"/>
+        <Entry Placeholder="Please enter movie name"
+           Text="{Binding Search}"/>
+        <Button Text="Search" 
+            HorizontalOptions="FillAndExpand"
+            BackgroundColor="Blue"
+            Command="{Binding SearchCommand}"
+            TextColor="White"/>
+        <ListView VerticalOptions="FillAndExpand"
+              ItemsSource="{Binding Result}"
+              HasUnevenRows="False"
+              RowHeight="100"
+              ItemTapped="ListView_OnItemTapped">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.ContextActions>
+                            <ToolbarItem Text="Share"
+                        CommandParameter="{Binding .}"
+                        Command="{Binding BindingContext.ShareCommand, Source={x:Reference MainPage}}"/>
+                        </ViewCell.ContextActions>
+                        <StackLayout Orientation="Horizontal" Padding="15">
+                            <Image Source="{Binding Poster}" VerticalOptions="FillAndExpand"/>
+                            <StackLayout Orientation="Vertical" Padding="10">
+                                <Label Text="{Binding Title}" FontSize="Medium" VerticalTextAlignment="Start" VerticalOptions="StartAndExpand"/>
+                                <Label Text="{Binding Year, StringFormat='Year: {0}'}" FontSize="Small" />
+                                <Label Text="{Binding Type, StringFormat='Type: {0}'}" FontSize="Small" />
+                            </StackLayout>
+                           </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackLayout>
 
 </ContentPage>
