@@ -6,6 +6,6 @@ This outcome is NOT subject of a demo for UX/UI design.
 <img src="1.png" width="300" />
 </p>
 <p>
-<img src="1.png" width="300" />
+<img src="2.png" width="300" />
 </p>
 
