@@ -4,17 +4,19 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using Newtonsoft.Json;
+using omdb.Constants;
 using omdb.Services;
+using Plugin.Connectivity;
+
 namespace omdb.Services
 {
     public class ContentsService
     {
         private readonly HttpClient _httpClient;
 
-        public const string BaseUrl = "http://www.omdbapi.com?apikey={0}&s={1}&r=json&page=1";
-        public const string FindUrlByID = "http://www.omdbapi.com?apikey={0}&i={1}&plot=full";
-        public const string ApiKey = "88bb8dc6";
+        
 
         public ContentsService()
         {
@@ -22,28 +24,44 @@ namespace omdb.Services
         }
         public async Task<List<Content>> SearchContentsAsync(string query)
         {
-            var response = await _httpClient.GetAsync(string.Format(BaseUrl, ApiKey, query));
-            if (response.IsSuccessStatusCode)
+            if (CrossConnectivity.Current.IsConnected)
             {
+                var url = string.Format(Cloud.ServerUrl + Cloud.BaseUrl, Cloud.ApiKey, query);
+                var response = await _httpClient.GetAsync(url); if (response.IsSuccessStatusCode)
+                {
                     var resultContent = await response.Content.ReadAsStringAsync();
                     var resultData = JsonConvert.DeserializeObject<ContentResponse>(resultContent);
-                if (resultData.Search == null)
-                    return null;//Movie not found!
-                else
-                    return resultData.Search.ToList();                
+                    if (resultData.Search == null)
+                        return null;//Movie not found!
+                    else
+                        return resultData.Search.ToList();
+                }
+                return new List<Content>();
             }
-            return new List<Content>();
+            else
+            {
+                UserDialogs.Instance.Alert("Please make sure your device is connected to the Internet!", "Alert", "OK");
+                return null;
+            }
         }
         public async Task<ContentModel> GetContentAsync(string id)
         {
-            var response = await _httpClient.GetAsync(string.Format(FindUrlByID, ApiKey, id));
-            if (response.IsSuccessStatusCode)
+            if (CrossConnectivity.Current.IsConnected)
             {
-                var resultContent = await response.Content.ReadAsStringAsync();
-                var resultData = JsonConvert.DeserializeObject<ContentModel>(resultContent);
-                return resultData;
+                var url = string.Format(Cloud.ServerUrl + Cloud.FindUrlByID, Cloud.ApiKey, id);
+                var response = await _httpClient.GetAsync(url); if (response.IsSuccessStatusCode)
+                {
+                    var resultContent = await response.Content.ReadAsStringAsync();
+                    var resultData = JsonConvert.DeserializeObject<ContentModel>(resultContent);
+                    return resultData;
+                }
+                return new ContentModel();
             }
-            return new ContentModel();
+            else
+            {
+                UserDialogs.Instance.Alert("Please make sure your device is connected to the Internet!", "Alert", "OK");
+                return null;
+            }
         }
     }
 }
