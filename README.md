@@ -1,3 +1,9 @@
 # omdb
 iOS and Android applications for searching movies by IMDB developed by Xamarin.Forms
-<img src="1.png" width="200" />
+<p>
+<img src="1.png" width="300" />
+</p>
+<p>
+<img src="1.png" width="300" />
+</p>
+
